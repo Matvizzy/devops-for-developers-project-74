@@ -1,11 +1,8 @@
-version: "3.9"
-
-services:
+services: 
   app:
     build:
       context: .
       dockerfile: Dockerfile.production
-    image: matvizzy/devops-project-74
     ports:
       - "8080:8080"
     depends_on:
@@ -17,11 +14,16 @@ services:
       DATABASE_HOST: db
       DATABASE_PORT: 5432
 
-  db:
-    image: postgres:16
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.production
+    depends_on:
+      - db
     environment:
-      POSTGRES_DB: app
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5432:5432"
+      DATABASE_NAME: app
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+    command: make test
