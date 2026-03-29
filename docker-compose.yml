@@ -2,8 +2,7 @@ version: "3.9"
 
 services:
   app:
-    build: .
-    working_dir: /app
-    volumes:
-      - ./app:/app
-    command: make test
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: matvizzy/devops-project-74
