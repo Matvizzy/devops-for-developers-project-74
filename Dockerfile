@@ -4,11 +4,12 @@ WORKDIR /app
 
 RUN apt-get update && apt-get install -y make netcat-openbsd
 
-COPY package.json package-lock.json ./
+COPY app/package.json package.json
+COPY app/package-lock.json package-lock.json
 
 RUN npm ci
 
-COPY . .
+COPY app/. .
 
 RUN npm run build
 
