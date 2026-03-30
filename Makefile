@@ -6,3 +6,6 @@ start-frontend:
 
 start-backend:
 	npm start -- --watch --verbose-watch --ignore-watch='node_modules .git .sqlite'
+
+ci:
+	docker compose -f docker-compose.yml up --abort-on-container-exit --exit-code-from app --build
