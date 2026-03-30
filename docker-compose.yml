@@ -1,4 +1,4 @@
-services: 
+services:
   db:
     image: postgres:16
     environment:
@@ -7,28 +7,34 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d app"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   app:
     build:
       context: .
       dockerfile: Dockerfile.production
-    ports:
-      - "8080:8080"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       DATABASE_NAME: app
       DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: postgres
       DATABASE_HOST: db
       DATABASE_PORT: 5432
+    command: make dev
 
   test:
     build:
       context: .
       dockerfile: Dockerfile.production
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       DATABASE_NAME: app
       DATABASE_USERNAME: postgres

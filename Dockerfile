@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y make netcat-openbsd
 COPY app/package.json package.json
 COPY app/package-lock.json package-lock.json
 
-RUN npm ci
+RUN npm ci --only=production
 
 COPY app/. .
 
