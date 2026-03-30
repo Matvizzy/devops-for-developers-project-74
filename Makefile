@@ -1,11 +1,12 @@
+setup:
+	[ -f .env ] || cp .env.example .env
+	docker compose run --rm app make setup
+
 dev:
-	npx concurrently "make start-frontend" "make start-backend"
+	docker compose up
 
-start-frontend:
-	npx webpack --watch --progress
-
-start-backend:
-	npm start -- --watch --verbose-watch --ignore-watch='node_modules .git .sqlite'
+test:
+	docker compose -f docker-compose.yml up --abort-on-container-exit --exit-code-from app
 
 ci:
-	docker compose -f docker-compose.yml up --abort-on-container-exit --exit-code-from app --build
+	docker compose -f docker-compose.yml up --abort-on-container-exit --exit-code-from app
